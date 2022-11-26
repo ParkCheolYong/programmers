@@ -1,0 +1,12 @@
+SELECT FLAVOR
+  FROM (
+        SELECT A.FLAVOR
+             , A.TOTAL_ORDER + SUM(B.TOTAL_ORDER) AS TOTAL_ORDER
+          FROM FIRST_HALF A
+               INNER JOIN JULY B ON B.FLAVOR = A.FLAVOR
+         GROUP BY
+               B.FLAVOR
+         ORDER BY 
+		       TOTAL_ORDER DESC
+	    ) X
+ LIMIT 3
