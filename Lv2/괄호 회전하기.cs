@@ -2,50 +2,41 @@ using System;
 using System.Collections.Generic;
 
 public class Solution {
-    public int solution(string s) {
+    public int solution(string s)
+    {
         int answer = 0;
 
-            Queue<char> q = new Queue<char>();
-            foreach (char c in s.ToCharArray())
-            {
-                q.Enqueue(c);
-            }
+        Queue<char> queue = new Queue<char>(s.ToCharArray());
+        Stack<char> stack = new Stack<char>();
 
-            for (int x =0; x < s.Length; x++)
-            {
-                if (q.Peek() == ']' || q.Peek() == '}' || q.Peek() == ')')
-                {
-                    q.Enqueue(q.Dequeue());
-                    continue;
-                }
+        for (int i = 0; i < s.Length; i++)
+        {
+            stack.Clear();
+            answer += Check(queue, stack);
+            queue.Enqueue(queue.Dequeue());
+        }
 
-                string rotation = string.Join("", q);
-                string temp = rotation;
-                while(true)
-                {
-                    temp = rotation.Replace("[]", "").Replace("{}", "").Replace("()", "");
+        return answer;
+    }
 
-                    if (temp != rotation)
-                    {
-                        rotation = temp;
-                    }
-                    else
-                    {
-                        if (string.IsNullOrEmpty(temp))
-                        {
-                            answer++;
-                            break;
-                        }
-                        else
-                        {
-                            break;
-                        }
-                    }
-                }
+    public int Check(Queue<char> queue, Stack<char> stack)
+    {
+        foreach (char c in queue)
+        {
+            if (c == '[' || c == '(' || c == '{')
+                stack.Push(c);
+            else if (stack.Count == 0)
+                return 0;
+            else if (stack.Peek() == '[' && c != ']')
+                return 0;
+            else if (stack.Peek() == '(' && c != ')')
+                return 0;
+            else if (stack.Peek() == '{' && c != '}')
+                return 0;
+            else
+                stack.Pop();
+        }
 
-                q.Enqueue(q.Dequeue());
-            }
-
-            return answer;
+        return stack.Count == 0 ? 1 : 0;
     }
 }
