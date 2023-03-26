@@ -1,28 +1,34 @@
 using System;
 
 class Solution
-{
+{   
     public int solution(int n, int a, int b)
+    {
+        int answer = 0;
+
+        while(a != b)
         {
-            int answer = 1;
-
-            for (int i = 2; i <= n; i *= 2)
+            if (a % 2 == 0)
             {
-                if (b - a == 1)
-                {
-                    if (a % 2 == 1) return answer;
-                }
-                else if (a - b == 1)
-                {
-                    if (b % 2 == 1) return answer;
-                }
-
-                a = (int)Math.Ceiling(a / 2.0);
-                b = (int)Math.Ceiling(b / 2.0);
-
-                answer++;
+                a /= 2;
+            }
+            else
+            {
+                a = (a + 1) / 2;
             }
 
-            return answer;
+            if (b % 2 == 0)
+            {
+                b /= 2;
+            }
+            else
+            { 
+                b = (b + 1) / 2; 
+            }
+
+            answer++;
         }
+
+        return answer;
+    }    
 }
