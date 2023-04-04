@@ -1,5 +1,64 @@
 using System;
 using System.Collections.Generic;
+using System.Linq;
+
+class Solution 
+{
+    //방문여부
+    public bool[,] visited;
+
+    //상하좌우 방향
+    public int[,] direction = new int[,] { { 1, 0 }, { -1, 0 }, { 0, 1 }, { 0, -1 } };
+
+    public int solution(int[,] maps)
+    {
+        int a = maps.GetLength(0);
+        int b = maps.GetLength(1);
+
+        visited = new bool[a, b];
+
+        //탐색을 위해 (y값,x값)을 담고있는 튜플형으로 큐를 생성 
+        Queue<Tuple<int, int>> q = new Queue<Tuple<int, int>>();
+        //시작지점을 큐에 담음
+        q.Enqueue(new Tuple<int, int>(0, 0));
+        //시작지점 방문 체크
+        visited[0, 0] = true;
+
+        while (q.Count() > 0)
+        {
+            int y = q.Peek().Item1;
+            int x = q.Dequeue().Item2;
+
+            //상하좌우 체크
+            for (int i = 0; i < 4; i++)
+            {
+                int nextY = y + direction[i, 0];
+                int nextX = x + direction[i, 1];
+
+                //다음좌표가 맵의 범위 안에 있고
+                //방문한적이 없으며
+                //갈 수 있는 길인 경우
+                if (nextX >= 0 && nextX < b && nextY >= 0 && nextY < a
+                    && !visited[nextY, nextX]
+                    && maps[nextY, nextX] > 0)
+                {
+                    visited[nextY, nextX] = true;
+
+                    //다음좌표에 누적 거리 입력
+                    maps[nextY, nextX] = maps[y, x] + 1;
+
+                    q.Enqueue(new Tuple<int, int>(nextY, nextX));
+                }
+            }
+        }
+
+        if (maps[a - 1, b - 1] == 1) return -1;
+        else return maps[a - 1, b - 1];
+    }
+}
+
+/*using System;
+using System.Collections.Generic;
 
 public class Node
     {
@@ -91,4 +150,4 @@ class Solution {
 
             return bestNode == null ? -1 : bestNode.PrevCnt + 1;
         }
-}
+}*/
