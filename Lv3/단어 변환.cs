@@ -2,6 +2,64 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 
+public class Solution 
+{
+    Stack<string> stack = new Stack<string>();
+
+    public int solution(string begin, string target, string[] words)
+    {
+        int answer = Dfs(begin, target, words);
+
+        return answer == int.MaxValue ? 0 : answer;
+    }
+
+    public int Dfs(string begin, string target, string[] words)
+    {
+        int answer = int.MaxValue;
+
+        if (begin == target)
+        {
+            return stack.Count();
+        }
+
+        foreach (string word in words) 
+        { 
+            if (IsOneDiff(begin,word) && !stack.Contains(word))
+            {
+                stack.Push(word);
+                answer = Math.Min(answer, Dfs(word, target, words));
+                stack.Pop();
+            }
+        }
+
+        return answer;
+    }
+
+    public bool IsOneDiff(string a, string b)
+    {
+        int diffCnt = 0;
+
+        for (int i = 0; i < a.Length; i++)
+        {
+            if (a[i] != b[i])
+            {
+                diffCnt++;
+            }
+
+            if (diffCnt > 1)
+            {
+                return false;
+            }
+        }
+
+        return true;
+    }
+}
+
+/*using System;
+using System.Collections.Generic;
+using System.Linq;
+
 public class Solution {
     public int solution(string begin, string target, string[] words)
         {
@@ -53,4 +111,4 @@ public class Solution {
 
             return 0;
         }
-}
+}*/
