@@ -15,7 +15,7 @@ public class Solution
             list.Add(new int[] { targets[i, 0], targets[i, 1] });
         }
 
-        list = list.OrderBy(x => x[0]).ThenBy(x => x[1]).ToList();
+        list = list.OrderBy(x => x[0]).ToList();
 
         int e = 0;
         int nextS = 0;
